@@ -1,0 +1,34 @@
+<div class="root">
+  <div class="navbar has-background-dark">
+    <div class="navbar-brand is-justify-content-center">
+      <div class="navbar-item">
+        <h1 class="app-name has-gradient-text">Kanban Board</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="board">
+    <div class="board-bar is-justify-content-space-between">
+      <p class="board-name">{{ board.name }}</p>
+      <button mat-mini-fab color="primary" aria-label="Add task" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+
+    <div class="board-wrapper">
+      <div class="board-columns" cdkDropListGroup>
+        <div class="board-column" *ngFor="let column of board.columns">
+          <div class="column-title">{{ column.name }}</div>
+          <div class="tasks-container" cdkDropList [cdkDropListData]="column.tasks" (cdkDropListDropped)="drop($event)">
+            <div class="task is-justify-content-space-between" *ngFor="let item of column.tasks" cdkDrag>
+              {{ item }}
+              <button mat-icon-button color="primary" aria-label="Delete icon" (click)="removeTask(item)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
