@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { Board, Column } from './kanban-board.model';
+import { Component } from '@angular/core';
+import { Board, Column, ModalCloseRespone } from './kanban-board.model';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { AddTaskModalComponent } from '../add-task-modal/add-task-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddOrEditTaskModalComponent } from '../add-or-edit-task-modal/add-or-edit-task-modal.component';
 
 @Component({
   selector: 'app-kanban-board',
   templateUrl: './kanban-board.component.html',
   styleUrls: ['./kanban-board.component.scss'],
 })
-export class KanbanBoardComponent implements OnInit {
+export class KanbanBoardComponent {
   constructor(public dialog: MatDialog) {}
 
   board: Board = new Board('Daily activities', [
@@ -36,16 +36,15 @@ export class KanbanBoardComponent implements OnInit {
     ]),
   ]);
 
-  ngOnInit() {}
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(AddTaskModalComponent, {
+  openDialog(columnIndex?: number, taskIndex?: number, task?: string): void {
+    const dialogRef = this.dialog.open(AddOrEditTaskModalComponent, {
       width: '250px',
+      data: { task },
     });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      this.board.columns[0].tasks.push(result);
-      console.log('The dialog was closed');
+    dialogRef.afterClosed().subscribe((result: ModalCloseRespone) => {
+      result.isEdit
+        ? this.editTask(result.task, columnIndex!, taskIndex!)
+        : this.saveTask(result.task);
     });
   }
 
@@ -66,10 +65,28 @@ export class KanbanBoardComponent implements OnInit {
     }
   }
 
-  removeTask(task: any) {
-    console.log('task', task)
-    console.log('this.boa', this.board.columns)
-    console.log('test',   this.board.columns.filter((item) => item.tasks !== task))
-    this.board.columns.filter((item) => item !== task);
+  removeTask(columnIndex: number, task: string) {
+    this.board.columns[columnIndex].tasks.splice(
+      this.board.columns[columnIndex].tasks.indexOf(task),
+      1
+    );
+  }
+
+  saveTask(task: any): void {
+    if (task && !this.board.columns[0].tasks.includes(task)) {
+      this.board.columns[0].tasks.push(task);
+      console.log('The dialog was closed');
+    } else if (task && this.board.columns[0].tasks.includes(task)) {
+      window.alert('Task already exists');
+    }
+  }
+
+  editTask(task: string, columnIndex: number, taskIndex: number): void {
+    if (task && !this.board.columns[columnIndex].tasks.includes(task)) {
+      this.board.columns[columnIndex].tasks[taskIndex] = task;
+      console.log('The dialog was closed');
+    } else if (task && this.board.columns[columnIndex].tasks.includes(task)) {
+      window.alert('Task already exists');
+    }
   }
 }

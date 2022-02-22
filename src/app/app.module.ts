@@ -9,14 +9,14 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { AddTaskModalComponent } from './add-task-modal/add-task-modal.component';
+import { AddOrEditTaskModalComponent } from './add-or-edit-task-modal/add-or-edit-task-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, KanbanBoardComponent, AddTaskModalComponent],
+  declarations: [AppComponent, KanbanBoardComponent, AddOrEditTaskModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

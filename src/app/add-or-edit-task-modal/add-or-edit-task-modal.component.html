@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Task</h1>
+<div mat-dialog-content>
+  <p> {{isEditMode?'Edit':'Add'}} your task!</p>
+ <form (ngSubmit)="onModalClose(taskForm.value)">
+  <mat-form-field appearance="fill" >
+    <mat-label>Task</mat-label>
+    <input [formControl]="taskForm" matInput />
+  </mat-form-field>
+  <div mat-dialog-actions>
+  <button type="button" mat-button (click)="onModalClose()">No Thanks</button>
+  <button [disabled]="taskForm.invalid" type="submit" mat-button cdkFocusInitial>Ok</button>
+</div>
+  </form>
+</div>

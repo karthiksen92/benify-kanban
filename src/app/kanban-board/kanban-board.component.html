@@ -17,14 +17,19 @@
 
     <div class="board-wrapper">
       <div class="board-columns" cdkDropListGroup>
-        <div class="board-column" *ngFor="let column of board.columns">
+        <div class="board-column" *ngFor="let column of board.columns let columnIndex = index" >
           <div class="column-title">{{ column.name }}</div>
           <div class="tasks-container" cdkDropList [cdkDropListData]="column.tasks" (cdkDropListDropped)="drop($event)">
-            <div class="task is-justify-content-space-between" *ngFor="let item of column.tasks" cdkDrag>
+            <div class="task is-justify-content-space-between" *ngFor="let item of column.tasks let taskIndex = index" cdkDrag>
               {{ item }}
-              <button mat-icon-button color="primary" aria-label="Delete icon" (click)="removeTask(item)">
+              <div>
+                 <button mat-icon-button color="primary" aria-label="Edit icon" (click)="openDialog(columnIndex,taskIndex,item)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" aria-label="Delete icon" (click)="removeTask(columnIndex,item)">
                 <mat-icon>delete</mat-icon>
               </button>
+              </div>
             </div>
           </div>
         </div>
